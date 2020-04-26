@@ -3,6 +3,7 @@ package com.app.hubert.guide.model;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,7 +12,6 @@ import com.app.hubert.guide.listener.OnHighlightDrewListener;
 import com.app.hubert.guide.listener.OnLayoutInflatedListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,14 +19,13 @@ import java.util.List;
  * <p>
  * Created on 2017/11/16.
  */
-
 public class GuidePage {
-
     private List<HighLight> highLights = new ArrayList<>();
     private boolean everywhereCancelable = true;
     private int backgroundColor;
 
     private int layoutResId;
+    private View mLayoutView;
     private int[] clickToDismissIds;
     private OnLayoutInflatedListener onLayoutInflatedListener;
     private OnHighlightDrewListener onHighlightDrewListener;
@@ -170,6 +169,12 @@ public class GuidePage {
         return this;
     }
 
+    public GuidePage setLayoutView(@NonNull View view, int... id) {
+        this.mLayoutView = view;
+        clickToDismissIds = id;
+        return this;
+    }
+
     public GuidePage setEverywhereCancelable(boolean everywhereCancelable) {
         this.everywhereCancelable = everywhereCancelable;
         return this;
@@ -214,7 +219,7 @@ public class GuidePage {
     }
 
     public boolean isEmpty() {
-        return layoutResId == 0 && highLights.size() == 0;
+        return (layoutResId == 0 || mLayoutView == null) && highLights.size() == 0;
     }
 
     public List<HighLight> getHighLights() {
@@ -228,6 +233,8 @@ public class GuidePage {
     public int getLayoutResId() {
         return layoutResId;
     }
+
+    public View getLayoutView() {return mLayoutView;}
 
     public int[] getClickToDismissIds() {
         return clickToDismissIds;

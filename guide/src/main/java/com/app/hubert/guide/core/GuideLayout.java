@@ -195,8 +195,15 @@ public class GuideLayout extends FrameLayout {
     private void addCustomToLayout(GuidePage guidePage) {
         removeAllViews();
         int layoutResId = guidePage.getLayoutResId();
-        if (layoutResId != 0) {
-            View view = LayoutInflater.from(getContext()).inflate(layoutResId, this, false);
+        final View layoutView = guidePage.getLayoutView();
+
+        if (layoutResId != 0 || layoutView != null) {
+            final View view;
+            if (layoutView == null) {
+                view = LayoutInflater.from(getContext()).inflate(layoutResId, this, false);
+            } else {
+                view = layoutView;
+            }
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             int[] viewIds = guidePage.getClickToDismissIds();
@@ -260,5 +267,4 @@ public class GuideLayout extends FrameLayout {
     public interface OnGuideLayoutDismissListener {
         void onGuideLayoutDismiss(GuideLayout guideLayout);
     }
-
 }
